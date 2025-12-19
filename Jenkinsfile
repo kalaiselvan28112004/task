@@ -1,3 +1,4 @@
+@Library('my-shared-lib') _
 pipeline {
     agent any
 
@@ -8,22 +9,12 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
+        stage('Build & Run with Library') {
             steps {
-                sh 'docker compose build'
-            }
-        }
-
-        stage('Cleanup Old Stack') {
-            steps {
-                sh 'docker compose down || true'
-            }
-        }
-
-        stage('Docker Up') {
-            steps {
-                sh 'docker compose up -d'
+                // Call the function from vars/myDockerSteps.groovy
+                myDockerSteps.buildAndUp()
             }
         }
     }
 }
+
